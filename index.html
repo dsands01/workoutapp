@@ -6,23 +6,23 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Workout">
-  <meta name="theme-color" content="#0f0f0f">
+  <meta name="theme-color" content="#0a0a0a">
   <title>Daily Workout</title>
   <link rel="manifest" href="manifest.json">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --surface2: #242424;
-      --border: #2e2e2e;
-      --text: #f0f0f0;
-      --muted: #888;
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --surface2: #1c1c1c;
+      --border: #262626;
+      --text: #fafafa;
+      --muted: #737373;
       --accent: #e8ff3b;
-      --accent-dim: rgba(232,255,59,0.15);
+      --accent-dim: rgba(232,255,59,0.12);
       --success: #22c55e;
-      --radius: 16px;
+      --radius: 20px;
       --safe-top: env(safe-area-inset-top, 0px);
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -46,10 +46,10 @@
       flex-direction: column;
       min-height: 100vh;
       min-height: -webkit-fill-available;
-      padding-top: calc(var(--safe-top) + 16px);
-      padding-bottom: calc(var(--safe-bottom) + 24px);
-      padding-left: 20px;
-      padding-right: 20px;
+      padding-top: calc(var(--safe-top) + 24px);
+      padding-bottom: calc(var(--safe-bottom) + 32px);
+      padding-left: 24px;
+      padding-right: 24px;
     }
 
     .screen.active { display: flex; }
@@ -59,15 +59,15 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 28px;
+      margin-bottom: 40px;
     }
 
     .logo {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--muted);
     }
 
     .back-btn {
@@ -88,71 +88,110 @@
 
     /* ── Screen 1: Muscle Group Selector ──────── */
     .screen-title {
-      font-size: 32px;
-      font-weight: 800;
-      line-height: 1.1;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-    }
-
-    .screen-subtitle {
-      font-size: 15px;
-      color: var(--muted);
+      font-size: clamp(2.5rem, 8vw, 3.5rem);
+      font-weight: 900;
+      line-height: 1.05;
       margin-bottom: 32px;
+      letter-spacing: -0.03em;
+      color: var(--text);
     }
 
     .group-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
+      gap: 16px;
       flex: 1;
     }
 
     .group-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
+      position: relative;
       border-radius: var(--radius);
-      padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+      overflow: hidden;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition: background 0.15s, border-color 0.15s;
-      min-height: 140px;
+      min-height: 200px;
       user-select: none;
+      background: var(--surface);
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.2s ease;
     }
 
     .group-card:active {
-      background: var(--surface2);
-      border-color: var(--accent);
+      transform: scale(0.98);
     }
 
-    .group-icon {
-      font-size: 32px;
-      line-height: 1;
+    .group-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.6) 100%);
+      pointer-events: none;
+    }
+
+    .group-card .group-card-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      min-height: 200px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
     }
 
     .group-name {
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: -0.3px;
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #fff;
+      line-height: 1.15;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.6);
     }
 
     .group-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.4;
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      margin-top: 8px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     }
+
+    .group-pill {
+      display: none;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 2;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 6px 10px;
+      border-radius: 20px;
+    }
+    .group-pill.visible { display: block; }
+
+    /* Male muscle-group photos only; B&W for consistent editorial look */
+    .group-card { filter: grayscale(100%); }
+    .group-card[data-group="chest"] { background-image: url('https://images.unsplash.com/photo-1737608745150-0f2e43ac3c4d?w=600&q=85'); }
+    .group-card[data-group="back"] { background-image: url('https://images.unsplash.com/photo-1745329532611-03818982ed31?w=600&q=85'); }
+    .group-card[data-group="shoulders"] { background-image: url('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&q=85'); }
+    .group-card[data-group="arms"] { background-image: url('https://images.unsplash.com/photo-1754475412029-3a4896a930c7?w=600&q=85'); }
 
     /* ── Screen 2: Exercise List ──────────────── */
     .session-meta {
       font-size: 13px;
       color: var(--muted);
-      margin-bottom: 20px;
+      margin-bottom: 24px;
       display: flex;
-      gap: 16px;
+      gap: 20px;
+      font-weight: 500;
     }
 
     .session-meta span {
@@ -170,9 +209,9 @@
 
     .exercise-card {
       background: var(--surface);
-      border: 1.5px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 24px;
       transition: border-color 0.2s;
     }
 
@@ -303,9 +342,9 @@
     /* Progress bar */
     .progress-bar-wrap {
       background: var(--surface2);
-      border-radius: 4px;
-      height: 4px;
-      margin-bottom: 24px;
+      border-radius: 2px;
+      height: 3px;
+      margin-bottom: 28px;
       overflow: hidden;
     }
 
@@ -324,9 +363,9 @@
     }
 
     .success-burst {
-      font-size: 80px;
+      font-size: 5rem;
       line-height: 1;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       animation: pop 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
     }
 
@@ -336,9 +375,9 @@
     }
 
     .success-title {
-      font-size: 36px;
+      font-size: clamp(2rem, 6vw, 2.75rem);
       font-weight: 900;
-      letter-spacing: -0.8px;
+      letter-spacing: -0.03em;
       line-height: 1.1;
       margin-bottom: 12px;
     }
@@ -347,25 +386,27 @@
       font-size: 16px;
       color: var(--muted);
       line-height: 1.5;
-      margin-bottom: 40px;
-      max-width: 280px;
+      margin-bottom: 48px;
+      max-width: 300px;
+      font-weight: 400;
     }
 
     .success-stats {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       margin-bottom: 48px;
     }
 
     .stat-box {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 20px 24px;
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      min-width: 90px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
     }
 
     .stat-num {
@@ -422,31 +463,35 @@
 
 <!-- Screen 1: Muscle Group Selector -->
 <div id="screen-home" class="screen active">
-  <div class="header">
-    <span class="logo">Daily Workout</span>
-  </div>
   <h1 class="screen-title">What are we training today?</h1>
-  <p class="screen-subtitle">Pick a muscle group to get your 5 exercises.</p>
   <div class="group-grid">
     <div class="group-card" data-group="chest" role="button" tabindex="0">
-      <span class="group-icon">💪</span>
-      <span class="group-name">Chest</span>
-      <span class="group-desc">Pecs, upper &amp; lower</span>
+      <span class="group-pill" data-group="chest" aria-hidden="true">Done</span>
+      <div class="group-card-content">
+        <span class="group-name">Chest</span>
+        <span class="group-desc">Pecs, upper &amp; lower</span>
+      </div>
     </div>
     <div class="group-card" data-group="back" role="button" tabindex="0">
-      <span class="group-icon">🦾</span>
-      <span class="group-name">Back</span>
-      <span class="group-desc">Lats, traps &amp; rhomboids</span>
+      <span class="group-pill" data-group="back" aria-hidden="true">Done</span>
+      <div class="group-card-content">
+        <span class="group-name">Back</span>
+        <span class="group-desc">Lats, traps &amp; rhomboids</span>
+      </div>
     </div>
     <div class="group-card" data-group="shoulders" role="button" tabindex="0">
-      <span class="group-icon">🔱</span>
-      <span class="group-name">Shoulders</span>
-      <span class="group-desc">Anterior, lateral &amp; posterior delts</span>
+      <span class="group-pill" data-group="shoulders" aria-hidden="true">Done</span>
+      <div class="group-card-content">
+        <span class="group-name">Shoulders</span>
+        <span class="group-desc">Anterior, lateral &amp; posterior delts</span>
+      </div>
     </div>
     <div class="group-card" data-group="arms" role="button" tabindex="0">
-      <span class="group-icon">⚡</span>
-      <span class="group-name">Arms</span>
-      <span class="group-desc">Biceps, triceps &amp; forearms</span>
+      <span class="group-pill" data-group="arms" aria-hidden="true">Done</span>
+      <div class="group-card-content">
+        <span class="group-name">Arms</span>
+        <span class="group-desc">Biceps, triceps &amp; forearms</span>
+      </div>
     </div>
   </div>
 </div>
@@ -498,202 +543,490 @@ const EXERCISES = {
   chest: [
     {
       name: "Barbell Bench Press",
-      description: "Lie flat on a bench with your feet on the floor. Grip the bar just outside shoulder-width, lower it to your mid-chest under control, then press explosively back to full extension. Keep your shoulder blades pinched together throughout."
+      description: "Lie on a flat bench, grasp the bar slightly wider than shoulder-width, lower it to touch the chest, and press upward to extend the elbows."
     },
     {
-      name: "Incline Barbell Press",
-      description: "Set the bench to 30–45 degrees. Unrack the bar with a shoulder-width grip and lower it to your upper chest. Press back up in a straight line, keeping your chest tall and elbows at roughly 75 degrees to your torso."
+      name: "Pec Deck Machine",
+      description: "Sit at the machine and bring your hands or arms together in an arc motion to squeeze the chest."
     },
     {
-      name: "Dumbbell Bench Press",
-      description: "Hold a dumbbell in each hand, palms facing forward. Lower them until your elbows are just below bench level, feeling a chest stretch. Press up and slightly inward, stopping just before the dumbbells touch at the top."
+      name: "Bent-Forward Cable Crossover",
+      description: "Stand in a staggered stance, bend forward, and bring cable handles together in a wide arc."
+    },
+    {
+      name: "Seated Chest Press Machine",
+      description: "Sit on the machine and press the handles forward to engage the chest."
     },
     {
       name: "Incline Dumbbell Press",
-      description: "Set the bench at 30–45 degrees. Press the dumbbells from chest height up and in, fully extending your arms. Lower slowly to feel a deep stretch in the upper pecs. Squeeze hard at the top on each rep."
+      description: "Set a bench to a 15- to 45-degree angle, lower dumbbells to chest level, and press them up."
     },
     {
-      name: "Dumbbell Chest Fly",
-      description: "Lie flat on a bench, holding dumbbells above your chest with a slight bend in your elbows. Lower your arms out wide in an arc until you feel a deep stretch, then squeeze the pecs to bring them back together. Keep the elbow angle fixed throughout."
+      name: "Dumbbell Flys",
+      description: "Lie flat, keep a slight bend in the elbows, lower weights laterally until the chest stretches, and raise them back up."
     },
     {
-      name: "Cable Crossover",
-      description: "Set cables at shoulder height or above. Take one handle in each hand and step forward into a slight stagger. Sweep your arms down and together in a hugging motion, crossing wrists at the bottom. Focus on squeezing the inner chest at peak contraction."
+      name: "Parallel Bar Dips",
+      description: "Suspend your body on dip bars, lean slightly forward, and lower yourself until the elbows form a 90-degree angle."
     },
     {
-      name: "Chest Dips",
-      description: "Hold parallel bars and lean your torso slightly forward (more than you would for tricep dips). Lower until you feel a deep chest stretch — roughly upper arms parallel to the floor. Press back up by driving your elbows back and together. Control the descent."
+      name: "Suspended Push-Ups",
+      description: "Perform push-ups using suspension straps to rely on bodyweight and force stabilization."
     },
     {
-      name: "Push-Ups",
-      description: "Start in a high plank with hands just wider than shoulder-width. Lower your chest to about an inch from the floor, keeping elbows at 45 degrees. Press through your palms to return to the top, fully extending your elbows. Keep your core braced the entire time."
+      name: "Stability Ball Push-Ups",
+      description: "Execute a push-up with your hands or feet resting on a stability ball for added core engagement."
     },
     {
-      name: "Low Cable Fly",
-      description: "Set cables at the lowest position and step forward with a slight lean. Pull both handles up and forward in a sweeping arc, meeting at chest height in front of you. Focus on lifting with the lower chest. Lower slowly and stretch at the bottom."
+      name: "Standard Push-Ups",
+      description: "Place hands flat on the floor, keep the body straight, lower the chest near the floor, and push back up."
     },
     {
-      name: "Decline Dumbbell Press",
-      description: "Secure your feet on a decline bench and hold dumbbells above your lower chest. Lower them to chest level with a controlled eccentric, feeling the lower pec stretch. Press back to full extension, keeping your core tight and back flat."
+      name: "Flat Dumbbell Press",
+      description: "Lie on a flat bench, lower dumbbells to the sides of your chest, and push them upward."
     },
     {
-      name: "Single-Arm Cable Fly",
-      description: "Stand sideways to a cable stack set at shoulder height. Grab the handle with the far hand and sweep it across your body in a wide arc. Focus on adducting the arm and contracting the inner pec. Return with control and repeat all reps before switching sides."
+      name: "Cable Fly",
+      description: "Stand between cable pulleys set at shoulder height and connect your arms in front of you while keeping them straight."
     },
     {
-      name: "Close-Grip Push-Up",
-      description: "Start in a push-up position with hands directly under your shoulders or slightly inside. Keep your elbows tucked close to your sides as you lower. This shifts more load to the inner chest and triceps. Press back up forcefully."
-    }
-  ],
-  back: [
-    {
-      name: "Barbell Deadlift",
-      description: "Stand with feet hip-width, bar over mid-foot. Hinge at the hips to grip the bar, shoulders slightly in front of the bar. Push the floor away while simultaneously pulling the bar into your hips. Keep your spine neutral and drive your hips forward at lockout."
+      name: "Dumbbell Pullover",
+      description: "Lie on a bench, hold a dumbbell over your chest, and lower it backward over your head with a slight elbow bend."
     },
     {
-      name: "Pull-Ups",
-      description: "Hang from the bar with an overhand grip just outside shoulder-width. Retract your shoulder blades, then drive your elbows down and back to pull your chin above the bar. Lower with control until fully extended. Avoid swinging."
-    },
-    {
-      name: "Barbell Bent-Over Row",
-      description: "Hinge at the hips until your torso is roughly parallel to the floor, knees slightly bent. Pull the bar into your lower sternum, leading with your elbows. Squeeze your shoulder blades together at the top. Lower the bar fully on each rep to stretch the lats."
-    },
-    {
-      name: "Single-Arm Dumbbell Row",
-      description: "Plant one hand and knee on a bench, letting the dumbbell hang straight down. Drive your elbow up and back, pulling the dumbbell to your hip. At the top, squeeze your lat hard for one count. Lower slowly under control to a full dead hang."
-    },
-    {
-      name: "Lat Pulldown",
-      description: "Sit at the pulldown station and grip the bar wide. Lean back slightly, retract your shoulder blades, and pull the bar to your upper chest while driving your elbows toward the floor. Control the weight back up to full arm extension."
-    },
-    {
-      name: "Seated Cable Row",
-      description: "Sit upright with feet on the platform and pull the handle to your lower abdomen. At full contraction, squeeze your shoulder blades together and hold briefly. Lean forward slightly on the way back out to stretch the lats, not your lower back."
-    },
-    {
-      name: "T-Bar Row",
-      description: "Straddle the T-bar or use a landmine setup. Hinge forward 45–60 degrees and pull the bar toward your sternum. Lead with your elbows and focus on a full scapular retraction at the top. Lower to a dead hang each rep."
-    },
-    {
-      name: "Face Pull",
-      description: "Set a cable at face height with a rope attachment. Pull the rope toward your face, separating your hands and finishing with your elbows flared high. Pause at full contraction to work the rear delts and external rotators. Return with control."
-    },
-    {
-      name: "Chin-Ups",
-      description: "Hang with an underhand shoulder-width grip. Pull yourself up until your chin clears the bar, focusing on driving your elbows down toward your hips. The underhand grip biases the lower lats and also involves the biceps more than pull-ups."
-    },
-    {
-      name: "Straight-Arm Pulldown",
-      description: "Stand facing a high cable with a straight bar or rope. With arms straight, pull the bar down in an arc to your hips, hinging slightly at the hips. Hold the fully contracted position, then slowly return. This isolates the lats without bicep assistance."
-    },
-    {
-      name: "Dumbbell Shrug",
-      description: "Hold heavy dumbbells at your sides with arms straight. Elevate your shoulders straight up toward your ears as high as possible. Hold the top position for a one-count, then lower slowly. Focus on pure trapezius contraction — do not roll the shoulders."
-    },
-    {
-      name: "Hyperextension",
-      description: "Position yourself in a hyperextension bench with hips at the pad edge. Lower your upper body until you feel your lower back stretch, then squeeze your glutes and erectors to raise back to parallel or just above. Keep your neck neutral throughout."
-    }
-  ],
-  shoulders: [
-    {
-      name: "Barbell Overhead Press",
-      description: "Stand (or sit) with the bar at collarbone height, grip just outside shoulder-width. Press the bar straight up while pulling your chin back to allow clearance. Lock out overhead, then lower under control to the starting position. Brace your core throughout."
-    },
-    {
-      name: "Dumbbell Shoulder Press",
-      description: "Hold dumbbells at ear height, palms facing forward. Press them straight overhead until your arms are fully extended. Lower back to ear height with a controlled descent. Keep your core tight and avoid arching your lower back excessively."
-    },
-    {
-      name: "Dumbbell Lateral Raise",
-      description: "Hold dumbbells at your sides with a slight bend in your elbows. Raise them out to the sides until they reach shoulder height, leading with your elbows. Pause briefly at the top, then lower slowly in 3 seconds. Avoid shrugging or using momentum."
-    },
-    {
-      name: "Arnold Press",
-      description: "Start with dumbbells at chin height, palms facing you. As you press overhead, rotate your wrists so palms face forward at the top. Reverse the rotation on the way down. This hits all three delt heads through the full range of rotation."
-    },
-    {
-      name: "Rear Delt Fly",
-      description: "Hinge at the hips or use an incline bench face-down. Hold dumbbells hanging below you with a slight elbow bend. Raise both arms out to the sides in a wide arc, squeezing the rear delts at the top. Lower slowly and with control."
-    },
-    {
-      name: "Cable Lateral Raise",
-      description: "Stand sideways to a low cable, grab the handle with the far hand across your body. Raise your arm out to the side and slightly forward until it reaches shoulder height. Lower slowly to the starting position. Cables maintain tension throughout the range."
-    },
-    {
-      name: "Dumbbell Front Raise",
-      description: "Stand with dumbbells in front of your thighs, palms facing back. Raise one or both arms forward to shoulder height, keeping a slight bend in your elbows. Hold briefly at the top, then lower under control. Avoid using your back to swing."
-    },
-    {
-      name: "Upright Row",
-      description: "Hold a barbell or dumbbells with an overhand grip at hip height. Pull the weight straight up along your body until it reaches chin level, leading with your elbows high. Lower slowly. Grip the bar slightly narrower than shoulder-width for better shoulder activation."
-    },
-    {
-      name: "Seated Dumbbell Press",
-      description: "Sit upright on a bench with back support. Hold dumbbells at shoulder height, elbows at 90 degrees. Press both dumbbells straight overhead until arms are extended, then lower back to start. The seated position removes leg drive for pure shoulder isolation."
-    },
-    {
-      name: "Reverse Cable Fly",
-      description: "Stand at a cable machine set to chest height. Cross your arms and grab the opposite handles. With arms almost straight, open them out wide like you're spreading wings until your arms are fully extended to the sides. Squeeze your rear delts and slowly return."
-    },
-    {
-      name: "Barbell Behind-the-Neck Press",
-      description: "Seated, hold a barbell rested on your upper traps. Press the bar straight up overhead to full extension, then lower behind your neck to start. Keep your torso upright and only attempt if you have adequate shoulder mobility — do not force range of motion."
-    },
-    {
-      name: "Cable Face Pull",
-      description: "Attach a rope to a cable set at face height. With elbows high and out, pull the center of the rope toward your forehead. Externally rotate at the top so your hands end up beside your ears, fists pointing toward the ceiling. Return with control."
-    }
-  ],
-  arms: [
-    {
-      name: "Barbell Curl",
-      description: "Stand holding a barbell with an underhand shoulder-width grip, arms fully extended. Curl the bar to shoulder height by flexing your elbows, keeping your upper arms pinned against your sides. Squeeze at the top, then lower slowly in 3 seconds."
-    },
-    {
-      name: "Hammer Curl",
-      description: "Hold dumbbells with a neutral grip (palms facing each other) at your sides. Curl both (or alternating) dumbbells to shoulder height without rotating your wrists. This hits the brachialis and brachioradialis harder than a standard curl for thicker arms."
-    },
-    {
-      name: "Incline Dumbbell Curl",
-      description: "Sit on a bench set to 45–60 degrees, letting your arms hang straight behind you. Curl both dumbbells up simultaneously, keeping your elbows back. This stretched starting position creates maximum long-head bicep tension for peak development."
-    },
-    {
-      name: "Preacher Curl",
-      description: "Rest the back of your upper arms on the preacher bench pad. Hold an EZ-bar or dumbbell, lower until almost fully extended, then curl up to a 90-degree angle or slightly beyond. The bench eliminates cheating and locks in the bicep tension."
-    },
-    {
-      name: "Cable Curl",
-      description: "Attach a straight or EZ bar to the low pulley. Stand close to the cable stack and curl the bar to shoulder height, keeping elbows stationary at your sides. Cables provide constant tension throughout the entire curl, unlike free weights."
-    },
-    {
-      name: "Concentration Curl",
-      description: "Sit on a bench, lean forward, and brace your elbow on the inside of your thigh. Curl a dumbbell slowly to shoulder height and fully supinate (rotate) your wrist at the top for peak bicep contraction. Lower fully on each rep."
-    },
-    {
-      name: "Tricep Pushdown",
-      description: "Attach a straight bar or rope to the high pulley. With elbows pinned at your sides, push the bar down until your arms are fully extended. Squeeze your triceps at full extension, then allow the bar to return slowly. Keep your torso upright."
-    },
-    {
-      name: "Overhead Tricep Extension",
-      description: "Hold a single dumbbell with both hands overhead, elbows close to your head. Lower the dumbbell behind your head until you feel a deep tricep stretch, then press back up to full extension. Keep elbows pointing straight up — don't let them flare out."
-    },
-    {
-      name: "Skull Crushers",
-      description: "Lie on a bench with an EZ-bar held above your face, arms extended. Keeping your upper arms vertical and stationary, bend your elbows to lower the bar toward your forehead or just behind it. Extend back to straight. Control every rep."
-    },
-    {
-      name: "Tricep Dips",
-      description: "Position your hands on parallel bars with elbows close to your body and torso upright. Lower yourself until your elbows reach 90 degrees, then press back up to full extension. Keep the torso upright (not forward) to target triceps over chest."
+      name: "15-Degree Decline Dumbbell Press",
+      description: "Set the bench to a slight decline and press dumbbells upward to target the lower chest."
     },
     {
       name: "Close-Grip Bench Press",
-      description: "Lie on a flat bench and grip the bar slightly inside shoulder-width. Lower the bar to your lower chest while keeping elbows tucked close to your sides. Press back to full extension. This variation heavily loads the triceps compared to standard bench."
+      description: "Perform a flat bench press using a grip slightly wider than shoulder-width and keeping elbows tucked."
+    },
+    {
+      name: "Incline Bench Press",
+      description: "Perform a barbell bench press on a 15- to 45-degree incline to emphasize the upper pectorals."
+    },
+    {
+      name: "Decline Bench Press",
+      description: "Perform a barbell bench press on a 15- to 30-degree decline to target the lower pectorals."
+    },
+    {
+      name: "High Cable Fly",
+      description: "Set cable pulleys to a high position and move arms downward to tap knuckles in front of the lower chest."
+    },
+    {
+      name: "Banded Push-Up",
+      description: "Perform a push-up with a resistance band stretched across the back to add resistance at the top."
+    },
+    {
+      name: "Deficit Push-Up",
+      description: "Elevate hands on boxes or plates to allow the chest to stretch deeper at the bottom of the movement."
+    },
+    {
+      name: "Smith Machine Press",
+      description: "Execute a bench press utilizing the guided barbell of a Smith machine for extra stability."
+    },
+    {
+      name: "Incline Smith Machine Press",
+      description: "Use the Smith machine on an incline bench to target the upper chest with added stability."
+    },
+    {
+      name: "Seated Cable Pec Fly",
+      description: "Sit on a bench between cable stacks and pull handles together for chest isolation."
+    },
+    {
+      name: "Cable Press Around",
+      description: "Press a single cable across your body's midline to get the pectoral muscle fully contracted."
+    },
+    {
+      name: "Floor Press",
+      description: "Lie flat on the floor and press weights upward until your elbows touch the floor, restricting the range of motion."
+    },
+    {
+      name: "Guillotine Press",
+      description: "Lower the barbell toward the neck to stretch the pecs, though this exercise carries a high risk of injury and is generally considered ineffective."
+    },
+    {
+      name: "Hex Press",
+      description: "Press dumbbells together while pressing them up, which offers minimal chest stretch and is considered a poor choice."
+    },
+    {
+      name: "Plate Press",
+      description: "Press a weight plate upward with both hands; this is awkward and offers low overload potential."
+    },
+    {
+      name: "Crossbody Standing Dumbbell Fly",
+      description: "Stand and sweep a dumbbell across your body, which provides zero tension during the stretch phase."
+    },
+    {
+      name: "Dumbbell Chest Press",
+      description: "A versatile press using dumbbells that allows you to adjust the elbow path for shoulder comfort."
+    },
+  ],
+  back: [
+    {
+      name: "Pull-Up",
+      description: "Hang from a bar with an overhand grip wider than your shoulders and pull your body up."
+    },
+    {
+      name: "Chin-Up",
+      description: "Use an underhand, shoulder-width grip on a bar to pull yourself up, emphasizing the lats and biceps."
+    },
+    {
+      name: "Band-Assisted Pull-Up",
+      description: "Step into a resistance band looped around the bar to help pull you up from the bottom position."
+    },
+    {
+      name: "Lat Pulldown",
+      description: "Sit at a machine and pull a straight bar down to the upper chest with an overhand grip."
+    },
+    {
+      name: "Barbell Row",
+      description: "Hinge forward at the hips and pull a barbell to your upper abs or torso."
+    },
+    {
+      name: "Pendlay Row",
+      description: "Perform a barbell row starting from a dead stop on the floor for every repetition."
+    },
+    {
+      name: "Single-Arm Dumbbell Row",
+      description: "Support one knee and hand on a bench and row a dumbbell backward toward your hip."
+    },
+    {
+      name: "Chest-Supported T-Bar Row",
+      description: "Rest your chest against an angled pad and row horizontal handles upward."
+    },
+    {
+      name: "Straight-Arm Lat Pullover",
+      description: "Stand back from a high cable pulley and pull a bar or rope down with straight arms."
+    },
+    {
+      name: "Cable Lat Pull-In",
+      description: "Kneel perpendicular to a cable machine and drive your elbow inward toward your torso."
+    },
+    {
+      name: "Inverted Row",
+      description: "Hang under a secured bar or suspension straps and pull your chest upward."
+    },
+    {
+      name: "Seated Cable Row",
+      description: "Sit at a low pulley station and row the handle toward your stomach while keeping your back straight."
+    },
+    {
+      name: "Landmine T-Bar Row",
+      description: "Row the weighted end of a barbell anchored in a landmine using a V-handle."
+    },
+    {
+      name: "Upright Row",
+      description: "Pull a barbell or cable upward toward your chin, keeping the weight close to your body."
+    },
+    {
+      name: "Wide Grip Lat Pulldown",
+      description: "Perform a pulldown with a wide grip to provide a big stretch on the lats."
+    },
+    {
+      name: "Neutral Grip Lat Pulldown",
+      description: "Use parallel handles on a pulldown machine to keep elbows tucked."
+    },
+    {
+      name: "Half-Kneeling One-Arm Lat Pulldown",
+      description: "Perform a single-arm pulldown on one knee to maximize the stretch."
+    },
+    {
+      name: "Cross Body Lat Pull Around",
+      description: "Twist your torso 90 degrees and pull a single cable across your body."
+    },
+    {
+      name: "Chest-Supported Row (Machine)",
+      description: "Sit at a row machine with a chest pad to eliminate lower back fatigue."
+    },
+    {
+      name: "Dumbbell Helms Row",
+      description: "Brace your chest against the back of an incline bench and row dumbbells upward."
+    },
+    {
+      name: "Seal Row",
+      description: "Lie completely flat on an elevated bench and row a barbell upward."
+    },
+    {
+      name: "Cable Lat Pullover (Lat Prayer)",
+      description: "Bend forward using a rope attachment to deeply stretch the lats on the negative phase."
+    },
+    {
+      name: "Renegade Row",
+      description: "Row dumbbells while holding a plank position, though it lacks the stability needed to maximize muscle growth."
+    },
+    {
+      name: "Croc Row",
+      description: "Perform heavy, high-rep dumbbell rows using slight momentum."
+    },
+    {
+      name: "Kelso Shrug",
+      description: "Retract your shoulder blades from a chest-supported row position without bending your elbows."
+    },
+    {
+      name: "EZ-Bar Chest-Supported Row",
+      description: "Row an EZ-curl bar using an underhand grip while lying face down on a bench."
+    },
+    {
+      name: "Seated One-Arm Chest-Supported Cable Row",
+      description: "Sit upright at a machine to row one cable handle at a time."
+    },
+    {
+      name: "Three-Point Dumbbell Row",
+      description: "Use a staggered stance with one hand bracing on a bench while rowing a dumbbell."
+    },
+    {
+      name: "Pronated Narrow-Grip Pulldown",
+      description: "Perform a lat pulldown using a narrow overhand grip."
+    },
+    {
+      name: "Reverse Grip Pulldown",
+      description: "Pull a bar down using an underhand (supinated) grip."
+    },
+  ],
+  shoulders: [
+    {
+      name: "Dumbbell Shoulder Press",
+      description: "Press dumbbells upward from shoulder height while standing or seated."
+    },
+    {
+      name: "45-Degree Incline Row",
+      description: "Lie face down on an incline bench and row dumbbells high with flared elbows."
+    },
+    {
+      name: "Seated Rear Lateral Raise",
+      description: "Sit on a bench, bend your torso over, and raise dumbbells out to your sides."
+    },
+    {
+      name: "Rear Delt Fly (Machine)",
+      description: "Sit facing a pec deck machine and pull the handles backward."
+    },
+    {
+      name: "Face Pulls",
+      description: "Use a high cable pulley to pull a rope toward your forehead, flaring your elbows."
+    },
+    {
+      name: "Barbell Overhead Press",
+      description: "Press a barbell from the upper chest to full extension overhead."
+    },
+    {
+      name: "Dumbbell Seated Shoulder Press",
+      description: "Sit on a bench with back support and press dumbbells overhead."
+    },
+    {
+      name: "Dumbbell Lateral Raise",
+      description: "Raise dumbbells out to your sides until they reach shoulder height."
+    },
+    {
+      name: "Cable Upright Row",
+      description: "Pull a cable rope attachment upward toward your chin with elbows leading."
+    },
+    {
+      name: "Dumbbell Bent-Over Reverse Fly",
+      description: "Bend over with a flat back and lift dumbbells out to the sides."
+    },
+    {
+      name: "Reverse Pec Deck",
+      description: "Use the pec deck facing the pad to isolate the rear deltoids."
+    },
+    {
+      name: "Band Pull-Aparts",
+      description: "Hold a resistance band with straight arms and pull it apart to squeeze the rear delts."
+    },
+    {
+      name: "Lean-In Dumbbell Lateral Raise",
+      description: "Lean sideways against a rack or bench while raising a dumbbell to increase stretch tension."
+    },
+    {
+      name: "Super ROM Lateral Raise",
+      description: "Lift dumbbells all the way overhead for a full side delt contraction."
+    },
+    {
+      name: "Machine Shoulder Press",
+      description: "Perform vertical presses using a machine to safely push to failure."
+    },
+    {
+      name: "Arnold-Style Side-Lying Dumbbell Raise",
+      description: "Lie sideways on an incline bench and perform lateral raises to maximize tension."
+    },
+    {
+      name: "Atlantis Standing Machine Lateral Raise",
+      description: "Use a specialized standing machine that provides even resistance across the lateral raise."
+    },
+    {
+      name: "Seated Machine Lateral Raise",
+      description: "Sit in a machine with arm pads to raise the arms laterally."
+    },
+    {
+      name: "Cable Lateral Raise",
+      description: "Raise a single cable handle out to the side for constant tension."
+    },
+    {
+      name: "Cable Y Raise",
+      description: "Sweep two cables up, out, and backward simultaneously."
+    },
+    {
+      name: "Behind the Back Cuffed Lateral Raise",
+      description: "Attach cables to wrist cuffs behind your back and raise outward."
+    },
+    {
+      name: "Banded Lateral Raise",
+      description: "Perform lateral raises utilizing resistance bands."
+    },
+    {
+      name: "Reverse Cable Crossover",
+      description: "Cross your arms over to grasp opposing high cables and pull them outward."
+    },
+    {
+      name: "Floor/Seated Face Pull",
+      description: "Perform face pulls while sitting or lying down to eliminate balance requirements."
+    },
+    {
+      name: "Prone Y-Raises",
+      description: "Lie face down on a mat and lift your arms above your head in a Y shape."
+    },
+    {
+      name: "Single-Arm Row with External Rotation",
+      description: "Row a dumbbell and externally rotate the forearm at the top of the movement."
+    },
+    {
+      name: "Cable Reverse Flys",
+      description: "Cross cables over each other at chest height and pull arms back in a wide arc."
+    },
+    {
+      name: "Dumbbell Front Raise",
+      description: "Raise dumbbells straight forward, though this is often considered redundant for front delts."
+    },
+    {
+      name: "Barbell Upright Row",
+      description: "Pull a barbell upward to your chest to target side delts and upper traps."
+    },
+    {
+      name: "Cable Diagonal Raise",
+      description: "Pull a low cable handle diagonally across your body."
+    },
+  ],
+  arms: [
+    {
+      name: "Barbell Bicep Curl",
+      description: "Stand holding a barbell with an underhand grip and curl the weight toward your shoulders."
+    },
+    {
+      name: "Dumbbell Hammer Curl",
+      description: "Hold dumbbells with a neutral grip and curl upward to target the brachialis."
     },
     {
       name: "Reverse Curl",
-      description: "Stand holding a barbell with an overhand grip at hip height. Curl the bar to shoulder height while keeping your wrists in line with your forearms throughout. This targets the brachioradialis and outer forearm muscles that regular curls don't fully reach."
-    }
+      description: "Curl a barbell or dumbbells using an overhand (pronated) grip to emphasize the forearms."
+    },
+    {
+      name: "Cable Rope Hammer Curl",
+      description: "Perform a hammer curl using a rope attachment on a low cable pulley."
+    },
+    {
+      name: "Reverse-Grip EZ Bar Curl",
+      description: "Use an EZ curl bar with an overhand grip to work the brachioradialis."
+    },
+    {
+      name: "Hammer Concentration Curl",
+      description: "Perform a concentration curl with a neutral grip while seated."
+    },
+    {
+      name: "Swiss Bar Hammer Curl",
+      description: "Curl using a multi-grip Swiss bar that allows for neutral hand placement."
+    },
+    {
+      name: "Incline Hammer Curl",
+      description: "Sit on an incline bench and perform hammer curls to stretch the biceps."
+    },
+    {
+      name: "Cross-Body Hammer Curl",
+      description: "Curl a dumbbell across your torso toward the opposite shoulder using a neutral grip."
+    },
+    {
+      name: "Chest-Supported Hammer Curl",
+      description: "Straddle an incline bench face down and perform neutral-grip curls."
+    },
+    {
+      name: "Triceps Pushdown",
+      description: "Attach a bar or rope to a high cable pulley and push down, extending your elbows fully."
+    },
+    {
+      name: "Preacher Hammer Curl",
+      description: "Rest your upper arms on a preacher pad and perform neutral-grip curls."
+    },
+    {
+      name: "EZ-Bar Curl",
+      description: "Curl an angled EZ-bar to reduce strain on the wrists."
+    },
+    {
+      name: "Standing Dumbbell Curl",
+      description: "Curl dumbbells simultaneously while standing."
+    },
+    {
+      name: "Preacher Curl (Barbell/Dumbbell)",
+      description: "Rest arms over an angled pad and curl upward to lock the elbows in place."
+    },
+    {
+      name: "Incline Dumbbell Curl",
+      description: "Sit on an incline bench, allowing your arms to hang back, and curl upward."
+    },
+    {
+      name: "Lying Dumbbell Curl",
+      description: "Lie flat on a bench, allowing the arms to hang fully to maximize bicep stretch."
+    },
+    {
+      name: "Scott Curl",
+      description: "Perform a preacher curl with a completely vertical arm pad."
+    },
+    {
+      name: "Flat Bench Curl",
+      description: "Lie face down or brace against a flat bench to curl with extreme stretch."
+    },
+    {
+      name: "Machine Preacher Curl",
+      description: "Use a loaded machine pad to perform strict preacher curls."
+    },
+    {
+      name: "Waiter Curl",
+      description: "Curl a weight plate holding its edges; noted as a poor exercise due to wrist strain."
+    },
+    {
+      name: "Drag Curl",
+      description: "Drag a barbell up your torso by pulling your elbows backward."
+    },
+    {
+      name: "Spider Curl",
+      description: "Lie face down on an incline bench with arms hanging straight down and curl upward."
+    },
+    {
+      name: "21s (Biceps)",
+      description: "Perform 7 bottom-half reps, 7 top-half reps, and 7 full reps in one set."
+    },
+    {
+      name: "Face-Away Bayesian Cable Curl",
+      description: "Stand facing away from a low pulley to stretch the biceps deeply behind you."
+    },
+    {
+      name: "Cheat Curl",
+      description: "Use slight body momentum to curl a heavier weight, then strictly control the negative phase."
+    },
+    {
+      name: "Strict Curl",
+      description: "Stand with back and head flat against a wall to prevent momentum while curling."
+    },
+    {
+      name: "Inverse Zottman Curl",
+      description: "Curl the weight up with a neutral grip and lower it with a supinated grip."
+    },
+    {
+      name: "Overhead Triceps Extension",
+      description: "Extend a cable or dumbbell overhead from behind your neck to stretch the triceps long head."
+    },
+    {
+      name: "Skull Crusher",
+      description: "Lie flat and lower an EZ-bar behind your head, then extend your elbows."
+    },
   ]
 };
 
@@ -701,6 +1034,42 @@ const EXERCISES = {
 let currentGroup = null;
 let sessionExercises = [];
 let sets = []; // sets[i] = number of completed sets for exercise i (0-4)
+
+// Weekly completion (localStorage, phone-only). Week = Monday–Sunday.
+const STORAGE_KEY = 'dailyWorkout';
+function getMondayOfWeek(d) {
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return new Date(d.getFullYear(), d.getMonth(), diff);
+}
+function getLastCompleted() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (_) { return {}; }
+}
+function saveCompletion(group) {
+  const data = getLastCompleted();
+  const today = new Date();
+  data[group] = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function isDoneThisWeek(group) {
+  const data = getLastCompleted();
+  const dateStr = data[group];
+  if (!dateStr) return false;
+  const completed = new Date(dateStr);
+  const monday = getMondayOfWeek(new Date());
+  return completed >= monday;
+}
+function updateWeekPills() {
+  document.querySelectorAll('.group-pill').forEach(pill => {
+    const group = pill.dataset.group;
+    const done = isDoneThisWeek(group);
+    pill.classList.toggle('visible', done);
+    pill.setAttribute('aria-hidden', !done);
+  });
+}
 
 function shuffle(arr) {
   const a = [...arr];
@@ -714,6 +1083,7 @@ function shuffle(arr) {
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if (id === 'screen-home') updateWeekPills();
   window.scrollTo(0, 0);
 }
 
@@ -804,6 +1174,7 @@ function checkCompletion() {
 }
 
 function showSuccess() {
+  saveCompletion(currentGroup);
   const labels = { chest: 'Chest', back: 'Back', shoulders: 'Shoulders', arms: 'Arms' };
   const gLabel = labels[currentGroup];
   document.getElementById('success-desc').textContent =
@@ -824,6 +1195,9 @@ document.querySelectorAll('.group-card').forEach(card => {
 document.getElementById('btn-back').addEventListener('click', () => showScreen('screen-home'));
 document.getElementById('btn-finish').addEventListener('click', showSuccess);
 document.getElementById('btn-new-workout').addEventListener('click', () => showScreen('screen-home'));
+
+// Show "Done" pills on home when app loads
+updateWeekPills();
 
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
